@@ -1,25 +1,26 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
 
-import { HomeComponent } from './components/home/home.component';
-import { LoginComponent } from './components/auth/login/login.component';
-import { CallbackComponent } from './components/auth/callback/callback.component';
-import { PostGeneratorComponent } from './components/post-generator/post-generator.component';
-import { ProfileComponent } from './components/profile/profile.component';
-import { AuthGuard } from './guards/auth.guard';
+import { CallbackComponent } from "./components/auth/callback/callback.component";
+import { SigninComponent } from "./components/auth/signin/signin.component";
+import { SignupComponent } from "./components/auth/signup/signup.component";
+import { HomeComponent } from "./components/home/home.component";
+import { PostGeneratorComponent } from "./components/post-generator/post-generator.component";
+import { ProfileComponent } from "./components/profile/profile.component";
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'login', component: LoginComponent },
-  { path: 'auth/callback', component: CallbackComponent },
-  { path: 'post/create', component: PostGeneratorComponent, canActivate: [AuthGuard] },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-  { path: '**', redirectTo: '/home' }
+  { path: "", redirectTo: "/signin", pathMatch: "full" },
+  { path: "home", component: HomeComponent },
+  { path: "signin", component: SigninComponent },
+  { path: "signup", component: SignupComponent },
+  { path: "auth/callback", component: CallbackComponent },
+  { path: "post/create", component: PostGeneratorComponent },
+  { path: "profile", component: ProfileComponent },
+  { path: "**", redirectTo: "/home" },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
