@@ -25,11 +25,11 @@ export class AuthService {
   }
 
   // Mock function - in real app, this would connect to LinkedIn OAuth
-  login(): void {
+  login(username: string, password: string): void {
     // In a real app, redirect to LinkedIn OAuth
     // For demo purposes, we'll simulate a successful login
-    const redirectUrl = this.getLinkedInAuthUrl();
-    window.location.href = redirectUrl;
+    // const redirectUrl = this.getLinkedInAuthUrl();
+    // window.location.href = redirectUrl;
   }
 
   // Get LinkedIn auth URL

@@ -1,12 +1,10 @@
 <div class="min-h-screen flex flex-col">
   <app-header 
-    *ngIf="(isAuthenticated$ | async)"
     (toggleSidebar)="toggleSidebar()">
   </app-header>
 
   <div class="flex flex-1">
     <app-sidebar 
-      *ngIf="(isAuthenticated$ | async)" 
       [isOpen]="isSidebarOpen"
       (closeSidebar)="isSidebarOpen = false">
     </app-sidebar>

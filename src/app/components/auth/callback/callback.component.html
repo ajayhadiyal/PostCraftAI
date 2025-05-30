@@ -9,9 +9,9 @@
         {{ isLoading ? 'Signing you in...' : (error ? 'Authentication Error' : 'Authentication Complete') }}
       </h2>
       
-      <div *ngIf="isLoading" class="mt-6 flex justify-center">
+      <!-- <div *ngIf="isLoading" class="mt-6 flex justify-center">
         <app-loading-spinner size="lg"></app-loading-spinner>
-      </div>
+      </div> -->
       
       <div *ngIf="error" class="mt-4 text-center">
         <p class="text-error-600 dark:text-error-400">{{ error }}</p>
