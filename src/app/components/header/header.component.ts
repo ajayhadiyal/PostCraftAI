@@ -41,4 +41,9 @@ export class HeaderComponent {
   navigateToPostCreator(): void {
     this.router.navigate(['/post/create']);
   }
+
+  navigateToLogin(): void {
+    this.router.navigate(['/signin']);
+  }
+
 }
