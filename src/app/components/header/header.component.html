@@ -47,32 +47,26 @@
 
     <!-- Right Navigation -->
     <div class="flex items-center">
-      <!-- User Profile Button -->
-      <div *ngIf="(currentUser$ | async) as user; else loginBtn" class="relative">
-        <button 
-          (click)="navigateToProfile()" 
-          class="flex items-center focus:outline-none">
-          <img 
-            [src]="user.profilePicture || 'https://via.placeholder.com/40'" 
-            alt="Profile"
-            class="w-8 h-8 rounded-full object-cover border border-gray-200 dark:border-gray-700"
-          >
-          <span class="ml-2 text-gray-700 dark:text-gray-300 font-medium hidden md:block">
-            {{ user.name.split(' ')[0] }}
-          </span>
-        </button>
-      </div>
-    
-      <!-- If not logged in: show login button -->
-      <ng-template #loginBtn>
+      <!-- Show circular profile button only when logged in -->
+      <ng-container *ngIf="isLoggedIn && (currentUser$ | async) as user">
         <button
-        class="mr-4 btn-primary text-sm"
-
-          (click)="navigateToLogin()"
+          (click)="navigateToProfile()"
+          class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold shadow-md"
+          [ngStyle]="{
+            'background-color': '#8e44ad'
+          }"
+          aria-label="Profile"
         >
+          {{ user.name?.charAt(0) | uppercase }}  
+        </button>
+      </ng-container>
+    
+      <!-- Show login button when not logged in -->
+      <ng-container *ngIf="!isLoggedIn">
+        <button class="btn-primary text-sm" (click)="navigateToLogin()">
           Login
         </button>
-      </ng-template>    
-    </div>
+      </ng-container>
+    </div>    
   </div>
 </header>

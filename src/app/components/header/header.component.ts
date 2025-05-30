@@ -16,16 +16,21 @@ export class HeaderComponent {
   
   currentUser$: Observable<User | null>;
   isDark$: Observable<boolean>;
+  isLoggedIn: boolean = false;  
   
   constructor(
     private authService: AuthService,
     private themeService: ThemeService,
-    private router: Router
+    private router: Router,
   ) {
     this.currentUser$ = this.authService.currentUser$;
     this.isDark$ = this.themeService.isDark$;
   }
   
+  ngOnInit(): void {
+    this.isLoggedIn = !!localStorage.getItem('accessToken');
+  }
+ 
   onToggleSidebar(): void {
     this.toggleSidebar.emit();
   }
@@ -46,4 +51,7 @@ export class HeaderComponent {
     this.router.navigate(['/signin']);
   }
 
+  logout(){
+    this.authService.logout();
+  }
 }

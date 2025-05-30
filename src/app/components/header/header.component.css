@@ -1,1 +1,4 @@
 /* Header-specific styles */
+button.rounded-full {
+  transition: background-color 0.3s;
+}
