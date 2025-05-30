@@ -1,0 +1,110 @@
+<div class="container mx-auto px-4 py-6">
+  <div class="max-w-3xl mx-auto">
+    <div class="mb-6">
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Create LinkedIn Post</h1>
+      <p class="text-gray-600 dark:text-gray-400">
+        Enter a topic or prompt, and our AI will generate engaging content for your LinkedIn network
+      </p>
+    </div>
+    
+    <!-- Error message -->
+    <div *ngIf="error" class="mb-6 bg-error-100 dark:bg-error-900 text-error-700 dark:text-error-200 p-4 rounded-md">
+      {{ error }}
+    </div>
+    
+    <!-- Prompt Form -->
+    <div *ngIf="!showPreview" class="card">
+      <form [formGroup]="promptForm" (ngSubmit)="generatePost()">
+        <div class="mb-4">
+          <label for="prompt" class="label">What would you like to post about?</label>
+          <textarea 
+            id="prompt"
+            formControlName="prompt"
+            class="textarea"
+            placeholder="E.g., Share my thoughts on remote work trends, Announce our company's new product launch, Highlight industry insights from the recent tech conference"
+            rows="4"
+          ></textarea>
+          <div *ngIf="promptForm.get('prompt')?.invalid && promptForm.get('prompt')?.touched" class="mt-1 text-sm text-error-600 dark:text-error-400">
+            Please enter a valid prompt (at least 3 characters).
+          </div>
+        </div>
+        
+        <div class="mt-6">
+          <button 
+            type="submit" 
+            [disabled]="promptForm.invalid || isGenerating"
+            class="w-full btn-primary flex items-center justify-center">
+            <app-loading-spinner *ngIf="isGenerating" size="sm" color="white" class="mr-2"></app-loading-spinner>
+            {{ isGenerating ? 'Generating...' : 'Generate Post' }}
+          </button>
+        </div>
+      </form>
+      
+      <div class="mt-8 border-t border-gray-200 dark:border-gray-700 pt-6">
+        <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">Tips for effective prompts:</h3>
+        
+        <div class="space-y-4">
+          <div class="flex items-start">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-500 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+            <p class="ml-2 text-sm text-gray-600 dark:text-gray-400">
+              <span class="font-medium text-gray-800 dark:text-gray-200">Be specific:</span> The more details you provide, the better the generated post will match your needs.
+            </p>
+          </div>
+          
+          <div class="flex items-start">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-500 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+            <p class="ml-2 text-sm text-gray-600 dark:text-gray-400">
+              <span class="font-medium text-gray-800 dark:text-gray-200">Mention your audience:</span> Include who you're trying to reach for more targeted content.
+            </p>
+          </div>
+          
+          <div class="flex items-start">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-500 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+            <p class="ml-2 text-sm text-gray-600 dark:text-gray-400">
+              <span class="font-medium text-gray-800 dark:text-gray-200">Suggest tone:</span> Mention if you want a professional, casual, inspirational, or educational tone.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Preview and Editing -->
+    <div *ngIf="showPreview" class="fade-in">
+      <app-post-preview 
+        [content]="generatedContent" 
+        [prompt]="promptForm.get('prompt')?.value"
+        (contentChanged)="updateContent($event)">
+      </app-post-preview>
+      
+      <div class="mt-6 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+        <button 
+          (click)="backToPrompt()" 
+          class="btn-outline flex-1">
+          Back to Prompt
+        </button>
+        
+        <button 
+          (click)="saveAsDraft()" 
+          [disabled]="isSaving"
+          class="btn-secondary flex-1 flex items-center justify-center">
+          <app-loading-spinner *ngIf="isSaving" size="sm" color="white" class="mr-2"></app-loading-spinner>
+          {{ isSaving ? 'Saving...' : 'Save as Draft' }}
+        </button>
+        
+        <button 
+          (click)="publishPost()" 
+          [disabled]="isPublishing"
+          class="btn-primary flex-1 flex items-center justify-center">
+          <app-loading-spinner *ngIf="isPublishing" size="sm" color="white" class="mr-2"></app-loading-spinner>
+          {{ isPublishing ? 'Publishing...' : 'Publish to LinkedIn' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,82 @@
+<div class="card">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Preview Your Post</h2>
+    
+    <div class="flex space-x-2">
+      <button 
+        (click)="toggleEdit()" 
+        class="btn-outline text-sm px-3 py-1.5 flex items-center">
+        <svg *ngIf="!isEditing" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+        </svg>
+        <svg *ngIf="isEditing" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        {{ isEditing ? 'Save Changes' : 'Edit Post' }}
+      </button>
+      
+      <button 
+        *ngIf="!isEditing"
+        (click)="regeneratePost()" 
+        class="btn-outline text-sm px-3 py-1.5 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+        Regenerate
+      </button>
+    </div>
+  </div>
+  
+  <div class="mb-4">
+    <p class="text-xs text-gray-500 dark:text-gray-400">Prompt: <span class="font-medium">{{ prompt }}</span></p>
+  </div>
+  
+  <div class="relative mb-4">
+    <div *ngIf="!isEditing" class="post-preview border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-white dark:bg-gray-800">
+      <p class="whitespace-pre-wrap">{{ editableContent }}</p>
+    </div>
+    
+    <textarea 
+      *ngIf="isEditing"
+      [(ngModel)]="editableContent"
+      (input)="handleContentChange($event)"
+      class="textarea h-60"
+      placeholder="Edit your post content here...">
+    </textarea>
+    
+    <div *ngIf="isEditing" class="absolute bottom-2 right-2 text-xs text-gray-500 dark:text-gray-400">
+      {{ getCharacterCount() }} / 3000
+    </div>
+  </div>
+  
+  <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+    <div class="flex justify-between items-center">
+      <div>
+        <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300">How it will look on LinkedIn:</h3>
+      </div>
+    </div>
+    
+    <div class="mt-4 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+      <div class="bg-white dark:bg-gray-800 p-4">
+        <div class="flex items-center mb-3">
+          <div class="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600 overflow-hidden mr-3">
+            <!-- User avatar would be here -->
+          </div>
+          <div>
+            <p class="font-medium text-gray-900 dark:text-white">Your Name</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Your Headline • Now</p>
+          </div>
+        </div>
+        
+        <div class="post-content mb-4">
+          <p class="text-gray-800 dark:text-gray-200 whitespace-pre-wrap">{{ editableContent }}</p>
+        </div>
+        
+        <div class="border-t border-gray-200 dark:border-gray-700 pt-3 flex justify-between text-xs text-gray-500 dark:text-gray-400">
+          <span>0 Reactions</span>
+          <span>0 Comments</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

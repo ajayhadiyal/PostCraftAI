@@ -1,0 +1,19 @@
+<div class="min-h-screen flex flex-col">
+  <app-header 
+    *ngIf="(isAuthenticated$ | async)"
+    (toggleSidebar)="toggleSidebar()">
+  </app-header>
+
+  <div class="flex flex-1">
+    <app-sidebar 
+      *ngIf="(isAuthenticated$ | async)" 
+      [isOpen]="isSidebarOpen"
+      (closeSidebar)="isSidebarOpen = false">
+    </app-sidebar>
+
+    <main class="flex-1 p-4 md:p-6 transition-all duration-200" 
+      [ngClass]="{'ml-0': !isSidebarOpen, 'ml-0 md:ml-64': isSidebarOpen && (isAuthenticated$ | async)}">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

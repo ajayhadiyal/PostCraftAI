@@ -1,0 +1,10 @@
+.drawer {
+  width: 16rem; /* w-64 */
+}
+
+@media (max-width: 768px) {
+  .drawer {
+    width: 80%;
+    max-width: 20rem;
+  }
+}
