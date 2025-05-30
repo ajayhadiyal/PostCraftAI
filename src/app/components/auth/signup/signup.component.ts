@@ -12,7 +12,6 @@ import { NotifyService } from "../../../services/notify.service";
 })
 export class SignupComponent {
   signUpForm: FormGroup;
-  isLoading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -28,25 +27,22 @@ export class SignupComponent {
     });
   }
 
-  ngOnInit() {}
-
-  async onSignUp() {
+  onSignup() {
     if (this.signUpForm.invalid) {
       this.signUpForm.markAllAsTouched();
       return;
     }
-    this.isLoading = true;
+    this.notifyService.show();
     const data = this.signUpForm.value;
-    await this.notifyService.show();
-    await this.authService.signUp(data).subscribe({
-      next: async (data) => {
-        console.log(data)
-        await this.notifyService.remove();
+    this.authService.signUp(data).subscribe({
+      next: (res) => {
+        this.notifyService.remove();
+        console.log(res);
         this.router.navigate(["/home"]);
       },
-      error: async (err) => {
-        await this.notifyService.remove();
-        console.error(" sign up error:", err);
+      error: (err) => {
+        this.notifyService.remove();
+        console.log("error", err);
       },
     });
   }

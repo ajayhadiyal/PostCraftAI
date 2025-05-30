@@ -17,8 +17,8 @@ export class PostGeneratorComponent implements OnInit {
   isSaving: boolean = false;
   generatedContent: string = "";
   showPreview: boolean = false;
-  error: string | null = null;
   showTipsModal: boolean = false;
+  hasValidResponse = false
 
   constructor(
     private fb: FormBuilder,
@@ -26,7 +26,7 @@ export class PostGeneratorComponent implements OnInit {
     private router: Router
   ) {
     this.promptForm = this.fb.group({
-      prompt: ["", [Validators.required, Validators.minLength(3)]],
+      prompt: ["", Validators.required],
     });
   }
 
@@ -47,17 +47,17 @@ export class PostGeneratorComponent implements OnInit {
 
     const prompt = this.promptForm.get("prompt")?.value;
     this.isGenerating = true;
-    this.error = null;
-
+    
     this.postService.generatePost(prompt).subscribe({
       next: (content) => {
         this.generatedContent = content;
         this.showPreview = true;
+        this.hasValidResponse = true
         this.isGenerating = false;
+
       },
       error: (err) => {
         console.error("Error generating post:", err);
-        this.error = "Failed to generate post. Please try again.";
         this.isGenerating = false;
       },
     });
@@ -83,7 +83,6 @@ export class PostGeneratorComponent implements OnInit {
       },
       error: (err) => {
         console.error("Error saving draft:", err);
-        this.error = "Failed to save draft. Please try again.";
         this.isSaving = false;
       },
     });
@@ -108,7 +107,6 @@ export class PostGeneratorComponent implements OnInit {
       },
       error: (err) => {
         console.error("Error publishing post:", err);
-        this.error = "Failed to publish post. Please try again.";
         this.isPublishing = false;
       },
     });
@@ -128,16 +126,15 @@ export class PostGeneratorComponent implements OnInit {
       modalContent.classList.remove("active");
       setTimeout(() => {
         this.showTipsModal = false;
-      }, 300); // Delay to allow animation to complete
+      }, 300); 
     }
   }
    adjustTextareaHeight(event: KeyboardEvent): void {
     const textarea = event.target as HTMLTextAreaElement;
     if (event.shiftKey && event.key === 'Enter') {
-      event.preventDefault(); // Prevent new line if desired
-      textarea.rows = textarea.rows + 2; // Increase height by 2 rows
+      event.preventDefault(); 
+      textarea.rows = textarea.rows + 2; 
     }
-    // Auto-adjust height based on content
     textarea.style.height = 'auto';
     textarea.style.height = `${textarea.scrollHeight}px`;
   }

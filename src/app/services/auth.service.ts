@@ -23,9 +23,7 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
     private apiService: ApiService
-  ) {
-    this.checkToken();
-  }
+  ) {}
 
   login(data: any): Observable<any> {
     return this.apiService.post<any>(`${API.LOGIN}`, data);
@@ -36,28 +34,8 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    this.router.navigate(['/signin']);
-  }
-
-
-  private setSession(user: User): void {
-    localStorage.setItem(this.TOKEN_KEY, user.accessToken || "");
-    localStorage.setItem(this.USER_KEY, JSON.stringify(user));
-    this.currentUserSubject.next(user);
-    this.isAuthenticatedSubject.next(true);
-  }
-
-  private checkToken(): void {
-    const token = localStorage.getItem(this.TOKEN_KEY);
-    const userData = localStorage.getItem(this.USER_KEY);
-
-    if (token && userData) {
-      const user = JSON.parse(userData) as User;
-      this.currentUserSubject.next(user);
-      this.isAuthenticatedSubject.next(true);
-    }
+    localStorage.removeItem("accessToken");
+    this.router.navigate(["/signin"]);
   }
 
   getToken(): string | null {
