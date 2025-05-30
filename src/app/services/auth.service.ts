@@ -36,12 +36,11 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
-    localStorage.removeItem(this.USER_KEY);
-    this.currentUserSubject.next(null);
-    this.isAuthenticatedSubject.next(false);
-    this.router.navigate(["/login"]);
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    this.router.navigate(['/signin']);
   }
+
 
   private setSession(user: User): void {
     localStorage.setItem(this.TOKEN_KEY, user.accessToken || "");

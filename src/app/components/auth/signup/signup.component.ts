@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthService } from "../../../services/auth.service";
 import { Router } from "@angular/router";
+import { NotifyService } from "../../../services/notify.service";
 
 @Component({
   selector: "app-signup",
@@ -16,7 +17,8 @@ export class SignupComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private notifyService: NotifyService
   ) {
     this.signUpForm = this.fb.group({
       fullname: ["", Validators.required],
@@ -28,23 +30,23 @@ export class SignupComponent {
 
   ngOnInit() {}
 
-  onSignUp() {
+  async onSignUp() {
     if (this.signUpForm.invalid) {
       this.signUpForm.markAllAsTouched();
       return;
     }
-    this.isLoading = true; 
+    this.isLoading = true;
     const data = this.signUpForm.value;
-
-    this.authService.signUp(data).subscribe({
-      next: (user) => {
-        console.log("Signup successful:", user);
-        this.isLoading = false;
+    await this.notifyService.show();
+    await this.authService.signUp(data).subscribe({
+      next: async (data) => {
+        console.log(data)
+        await this.notifyService.remove();
         this.router.navigate(["/home"]);
       },
-      error: (err) => {
-        this.isLoading = false;
-        console.error("Signup error:", err);
+      error: async (err) => {
+        await this.notifyService.remove();
+        console.error(" sign up error:", err);
       },
     });
   }
