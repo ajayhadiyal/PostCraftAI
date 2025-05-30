@@ -13,8 +13,6 @@ import { ProfileComponent } from "./components/profile/profile.component";
 import { SidebarComponent } from "./components/sidebar/sidebar.component";
 import { LoadingSpinnerComponent } from "./components/ui/loading-spinner/loading-spinner.component";
 
-// Guards
-import { AuthGuard } from "./guards/auth.guard";
 
 // Interceptors
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
@@ -41,7 +39,6 @@ import { AuthModule } from "./components/auth/auth.module";
   ],
   providers: [
     provideHttpClient(),
-    AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

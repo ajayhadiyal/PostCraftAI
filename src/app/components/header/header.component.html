@@ -57,16 +57,10 @@
           }"
           aria-label="Profile"
         >
-          {{ user.name?.charAt(0) | uppercase }}  
+          {{ user.name ? (user.name.charAt(0) | uppercase) : '' }}  
         </button>
       </ng-container>
-    
-      <!-- Show login button when not logged in -->
-      <ng-container *ngIf="!isLoggedIn">
-        <button class="btn-primary text-sm" (click)="navigateToLogin()">
-          Login
-        </button>
-      </ng-container>
+
     </div>    
   </div>
 </header>
