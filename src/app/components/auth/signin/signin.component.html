@@ -129,6 +129,15 @@
               class="block w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm text-gray-900 dark:text-white px-3 py-2 focus:outline-none focus:border-primary-500 focus:ring-primary-500"
               placeholder="Enter your username"
             />
+            <div
+              *ngIf="
+                loginForm.get('username')?.touched &&
+                loginForm.get('username')?.invalid
+              "
+              class="text-red-500 text-sm mt-1"
+            >
+              * Username is required
+            </div>
           </div>
 
           <!-- Password Field -->
@@ -145,10 +154,17 @@
               class="block w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm text-gray-900 dark:text-white px-3 py-2 focus:outline-none focus:border-primary-500 focus:ring-primary-500"
               placeholder="Enter your password"
             />
+            <div
+              *ngIf="
+                loginForm.get('password')?.touched &&
+                loginForm.get('password')?.invalid
+              "
+              class="text-red-500 text-sm mt-1"
+            >
+              * Password is required
+            </div>
           </div>
-        </div>
 
-        <div>
           <button
             type="submit"
             class="w-full flex justify-center py-3 px-4 rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
